@@ -34,8 +34,8 @@
           <th>Buttons</th>
         </tr>
       </thead>
-      <tbody v-for="post of posts" :key="post.id">
-        <tr>
+      <tbody>
+        <tr v-for="post of posts" :key="post.id">
           <th scope="row">{{ post.id }}</th>
           <td>{{ post.userId }}</td>
           <td @click="openPost(post.id)">{{ post.title }}</td>

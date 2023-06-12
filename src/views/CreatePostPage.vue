@@ -37,7 +37,7 @@
             <input
               v-model="post.userId"
               :class="{
-                'is-invalid': isSubmitted && v$.post.userId.required.$invalid,
+                'is-invalid': isSubmitted && v$.post.userId.$invalid,
               }"
               type="number"
               class="form-control"
@@ -53,9 +53,7 @@
             type="text"
             class="form-control"
             :class="{
-              'is-invalid':
-                (isSubmitted && v$.post.title.required.$invalid) ||
-                v$.post.title.alpha.$invalid,
+              'is-invalid': isSubmitted && v$.post.title.$invalid,
             }"
             aria-describedby="validationServer03Feedback"
           />
@@ -66,9 +64,7 @@
           <textarea
             v-model="post.body"
             :class="{
-              'is-invalid':
-                (isSubmitted && v$.post.body.required.$invalid) ||
-                v$.post.body.alpha.$invalid,
+              'is-invalid': isSubmitted && v$.post.body.$invalid,
             }"
             type="text"
             class="form-control"
@@ -107,6 +103,7 @@ export default {
       loading: false,
       isSubmitted: false,
       isElementVisible: true,
+      errorred: false,
     };
   },
   validations() {

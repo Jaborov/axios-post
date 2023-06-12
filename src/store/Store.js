@@ -33,17 +33,11 @@ export default createStore({
     addPosts({ commit }, posts) {
       commit("addPosts", posts);
     },
-    addComments({ commit }, comments) {
-      commit("addComments", comments);
-    },
     deletePost({ commit }, post) {
       commit("deletePost", post);
     },
     editPost({ commit }, post) {
       commit("editPost", post);
-    },
-    createComment({ commit }, post) {
-      commit("creatrComment", post);
     },
   },
   modules: {},
