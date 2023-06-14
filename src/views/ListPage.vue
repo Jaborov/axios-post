@@ -76,10 +76,11 @@ export default {
       this.loading = true;
       instance
         .get("/posts/")
-        .then(() => {
-          this.addPostsBy(this.posts);
-          // this.$store.dispatch("addPosts", response.data);
+        .then((response) => {
+          this.addPosts(response.data);
+          console.log(response.data);
           this.posts = this.$store.getters.posts;
+          // this.$store.dispatch("addPosts", response.data);
         })
         .catch(() => {
           this.errorred = true;
@@ -104,7 +105,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["deletePostBy, addPostsBy"]),
+    ...mapMutations(["deletePostBy", "addPosts"]),
     deletePost(id) {
       this.loading = true;
       instance

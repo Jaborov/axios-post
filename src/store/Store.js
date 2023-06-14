@@ -18,7 +18,7 @@ export default createStore({
       const index = state.posts.findIndex((item) => item.id === id);
       state.posts.splice(index, 1);
     },
-    addPostsBy(state, posts) {
+    addPosts(state, posts) {
       state.posts = posts;
     },
     editPost(state, post) {
