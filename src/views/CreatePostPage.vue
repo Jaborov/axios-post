@@ -86,7 +86,8 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
-import axios from "axios";
+import instance from "@/axios/instance";
+import { mapMutations } from "vuex";
 export default {
   name: "CreatePage",
   setup() {
@@ -116,6 +117,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["createPost"]),
     submitHundler() {
       this.isSubmitted = true;
       this.v$.$touch();
@@ -124,10 +126,10 @@ export default {
       }
       this.isElementVisible = false;
       this.loading = true;
-      axios
-        .post("https://jsonplaceholder.typicode.com/posts/", this.post)
+      instance
+        .post("/posts/", this.post)
         .then(() => {
-          this.$store.dispatch("createPost", this.post);
+          this.createPost(this.post);
           this.$router.push("/list");
         })
         .catch(() => {
@@ -137,6 +139,19 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+      // axios
+      //   .post("https://jsonplaceholder.typicode.com/posts/", this.post)
+      //   .then(() => {
+      //     this.$store.dispatch("createPost", this.post);
+      //     this.$router.push("/list");
+      //   })
+      //   .catch(() => {
+      //     this.errorred = true;
+      //     this.isElementVisible = false;
+      //   })
+      //   .finally(() => {
+      //     this.loading = false;
+      //   });
     },
   },
 };

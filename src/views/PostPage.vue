@@ -91,7 +91,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import instance from "@/axios/instance";
 export default {
   data() {
     return {
@@ -107,8 +107,8 @@ export default {
     this.post = this.$store.getters.postsById(this.id);
     this.loading = true;
     this.isElementVisible = true;
-    axios
-      .get(`https://jsonplaceholder.typicode.com/posts/${this.id}/comments`)
+    instance
+      .get(`/posts/${this.id}/comments`)
       .then((response) => {
         this.comments = response.data;
       })
@@ -120,13 +120,26 @@ export default {
         this.loading = false;
         this.isElementVisible = true;
       });
+    // axios
+    //   .get(`https://jsonplaceholder.typicode.com/posts/${this.id}/comments`)
+    //   .then((response) => {
+    //     this.comments = response.data;
+    //   })
+    //   .catch(() => {
+    //     this.errorred = true;
+    //     this.isElementVisible = false;
+    //   })
+    //   .finally(() => {
+    //     this.loading = false;
+    //     this.isElementVisible = true;
+    //   });
   },
   methods: {
     editPostBody(id) {
       this.isElementVisible = false;
       this.loading = true;
-      axios
-        .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      instance
+        .get(`/posts/${id}`)
         .then(() => {
           this.$router.push({ name: "editPostBody", params: { id } });
         })
@@ -135,6 +148,16 @@ export default {
           this.isElementVisible = false;
         })
         .finally(() => (this.loading = false));
+      // axios
+      //   .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      //   .then(() => {
+      //     this.$router.push({ name: "editPostBody", params: { id } });
+      //   })
+      //   .catch(() => {
+      //     this.errorred = true;
+      //     this.isElementVisible = false;
+      //   })
+      //   .finally(() => (this.loading = false));
     },
   },
 };

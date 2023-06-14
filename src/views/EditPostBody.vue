@@ -69,7 +69,8 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-import axios from "axios";
+import { mapMutations } from "vuex";
+import instance from "../axios/instance";
 
 export default {
   setup() {
@@ -95,6 +96,12 @@ export default {
     };
   },
   methods: {
+    ...mapMutations([
+      "editPost",
+      // this.post = { ...this.$store.getters.postsById(this.id) };
+      // this.$router.back();
+    ]),
+
     editBody() {
       this.isSubmitted = true;
       this.v$.$touch();
@@ -103,13 +110,10 @@ export default {
       }
       this.loading = true;
       this.isElementVisible = true;
-      axios
-        .patch(`https://jsonplaceholder.typicode.com/posts/${this.id}`, {
-          body: this.body,
-        })
+      instance
+        .patch(`/posts/${this.id}`)
         .then(() => {
-          this.$store.dispatch("editPost", this.post);
-          this.post = { ...this.$store.getters.postsById(this.id) };
+          this.editPost(this.post);
           this.$router.back();
         })
         .catch(() => {
@@ -119,6 +123,22 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+      // axios
+      //   .patch(`https://jsonplaceholder.typicode.com/posts/${this.id}`, {
+      //     body: this.body,
+      //   })
+      //   .then(() => {
+      //     this.editPost(this.post);
+      //     this.$router.back();
+      //     // this.$store.dispatch("editPost", this.post);
+      //   })
+      //   .catch(() => {
+      //     this.errorred = true;
+      //     this.isElementVisible = false;
+      //   })
+      //   .finally(() => {
+      //     this.loading = false;
+      //   });
     },
   },
   mounted() {

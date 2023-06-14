@@ -14,11 +14,11 @@ export default createStore({
     createPost(state, post) {
       state.posts.push(post);
     },
-    deletePost(state, id) {
+    deletePostBy(state, id) {
       const index = state.posts.findIndex((item) => item.id === id);
       state.posts.splice(index, 1);
     },
-    addPosts(state, posts) {
+    addPostsBy(state, posts) {
       state.posts = posts;
     },
     editPost(state, post) {

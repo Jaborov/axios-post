@@ -54,7 +54,8 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import instance from "@/axios/instance";
+import { mapMutations } from "vuex";
 
 export default {
   data() {
@@ -73,10 +74,11 @@ export default {
   mounted() {
     if (this.$store.getters.posts.length === 0) {
       this.loading = true;
-      axios
-        .get("https://jsonplaceholder.typicode.com/posts/")
-        .then((response) => {
-          this.$store.dispatch("addPosts", response.data);
+      instance
+        .get("/posts/")
+        .then(() => {
+          this.addPostsBy(this.posts);
+          // this.$store.dispatch("addPosts", response.data);
           this.posts = this.$store.getters.posts;
         })
         .catch(() => {
@@ -86,15 +88,29 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+      // axios
+      //   .get("https://jsonplaceholder.typicode.com/posts/")
+      //   .then((response) => {
+      //     this.$store.dispatch("addPosts", response.data);
+      //     this.posts = this.$store.getters.posts;
+      //   })
+      //   .catch(() => {
+      //     this.errorred = true;
+      //     this.isElementVisible = false;
+      //   })
+      //   .finally(() => {
+      //     this.loading = false;
+      //   });
     }
   },
   methods: {
+    ...mapMutations(["deletePostBy, addPostsBy"]),
     deletePost(id) {
       this.loading = true;
-      axios
-        .delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      instance
+        .delete(`/posts/${id}`)
         .then(() => {
-          this.$store.dispatch("deletePost", id);
+          this.deletePostBy(id);
         })
         .catch(() => {
           this.errorred = true;
@@ -103,6 +119,18 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+      // axios
+      //   .delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      //   .then(() => {
+      //     this.$store.dispatch("deletePost", id);
+      //   })
+      //   .catch(() => {
+      //     this.errorred = true;
+      //     this.isElementVisible = false;
+      //   })
+      //   .finally(() => {
+      //     this.loading = false;
+      //   });
     },
     editPost(id) {
       this.$router.push({ name: "editPost", params: { id } });
