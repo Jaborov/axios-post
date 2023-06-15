@@ -93,7 +93,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
 import instance from "@/axios/instance";
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "CreatePage",
@@ -123,6 +123,12 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters(["posts", "postById"]),
+    posts() {
+      return this.postById(this.id);
+    },
+  },
   methods: {
     ...mapMutations(["editPost"]),
     submitHundler() {
@@ -133,13 +139,12 @@ export default {
       }
       this.loading = true;
       this.isElementVisible = false;
+      console.log(this.post);
       instance
         .put(`/posts/${this.id}`, this.post)
         .then(() => {
-          this.editPost(this.post);
-          this.$router.push("/list");
-          this.posts = {
-            ...this.$store.getters.postsById(+this.$route.params.id),
+          this.post = {
+            ...this.postById(+this.$route.params.id),
           };
         })
         .catch(() => {
@@ -149,26 +154,12 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-
-      // axios
-      //   .put(`https://jsonplaceholder.typicode.com/posts/${this.id}`, this.post)
-      //   .then(() => {
-      //     this.posts = {
-      //       ...this.$store.getters.postsById(+this.$route.params.id),
-      //     };
-      //   })
-      //   .catch(() => {
-      //     this.errorred = true;
-      //     this.isElementVisible = false;
-      //   })
-      //   .finally(() => {
-      //     this.loading = false;
-      //   });
-      // this.$store.dispatch("editPost", this.post);
+      this.editPost(this.post);
+      this.$router.push("/list");
     },
   },
   mounted() {
-    this.post = { ...this.$store.getters.postsById(+this.$route.params.id) };
+    this.post = { ...this.postById(+this.$route.params.id) };
   },
 };
 </script>

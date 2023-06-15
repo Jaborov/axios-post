@@ -18,13 +18,13 @@
       <div class="mb-3">
         <div class="card">
           <div class="card-header">
-            ID : {{ post.id }} user ID : {{ post.userId }}
+            ID : {{ posts.id }} user ID : {{ posts.userId }}
           </div>
           <div class="card-body">
             <blockquote class="blockquote mb-0">
-              <p>{{ post.title }}.</p>
+              <p>{{ posts.title }}.</p>
               <footer class="blockquote-footer">
-                {{ post.body }}
+                {{ posts.body }}
               </footer>
             </blockquote>
           </div>
@@ -92,6 +92,7 @@
 </template>
 <script>
 import instance from "@/axios/instance";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -103,8 +104,14 @@ export default {
       isElementVisible: true,
     };
   },
+  computed: {
+    ...mapGetters(["posts", "postById"]),
+    posts() {
+      return this.postById(this.id);
+    },
+  },
   mounted() {
-    this.post = this.$store.getters.postsById(this.id);
+    // this.post = this.$store.getters.postsById(this.id);
     this.loading = true;
     this.isElementVisible = true;
     instance
@@ -120,44 +127,12 @@ export default {
         this.loading = false;
         this.isElementVisible = true;
       });
-    // axios
-    //   .get(`https://jsonplaceholder.typicode.com/posts/${this.id}/comments`)
-    //   .then((response) => {
-    //     this.comments = response.data;
-    //   })
-    //   .catch(() => {
-    //     this.errorred = true;
-    //     this.isElementVisible = false;
-    //   })
-    //   .finally(() => {
-    //     this.loading = false;
-    //     this.isElementVisible = true;
-    //   });
   },
   methods: {
     editPostBody(id) {
       this.isElementVisible = false;
       this.loading = true;
-      instance
-        .get(`/posts/${id}`)
-        .then(() => {
-          this.$router.push({ name: "editPostBody", params: { id } });
-        })
-        .catch(() => {
-          this.errorred = true;
-          this.isElementVisible = false;
-        })
-        .finally(() => (this.loading = false));
-      // axios
-      //   .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      //   .then(() => {
-      //     this.$router.push({ name: "editPostBody", params: { id } });
-      //   })
-      //   .catch(() => {
-      //     this.errorred = true;
-      //     this.isElementVisible = false;
-      //   })
-      //   .finally(() => (this.loading = false));
+      this.$router.push({ name: "editPostBody", params: { id } });
     },
   },
 };

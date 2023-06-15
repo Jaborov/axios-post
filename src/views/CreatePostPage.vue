@@ -129,7 +129,6 @@ export default {
       instance
         .post("/posts/", this.post)
         .then(() => {
-          this.createPost(this.post);
           this.$router.push("/list");
         })
         .catch(() => {
@@ -139,19 +138,7 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-      // axios
-      //   .post("https://jsonplaceholder.typicode.com/posts/", this.post)
-      //   .then(() => {
-      //     this.$store.dispatch("createPost", this.post);
-      //     this.$router.push("/list");
-      //   })
-      //   .catch(() => {
-      //     this.errorred = true;
-      //     this.isElementVisible = false;
-      //   })
-      //   .finally(() => {
-      //     this.loading = false;
-      //   });
+      this.createPost(this.post);
     },
   },
 };

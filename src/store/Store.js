@@ -6,7 +6,7 @@ export default createStore({
   },
   getters: {
     posts: (s) => s.posts,
-    postsById: (s) => (id) => {
+    postById: (s) => (id) => {
       return s.posts.find((t) => t.id === id);
     },
   },
@@ -22,6 +22,8 @@ export default createStore({
       state.posts = posts;
     },
     editPost(state, post) {
+      console.log(55555555);
+      console.log(post);
       const index = state.posts.findIndex((item) => item.id === post.id);
       state.posts.splice(index, 1, post);
     },
