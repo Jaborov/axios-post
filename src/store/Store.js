@@ -28,19 +28,5 @@ export default createStore({
       state.posts.splice(index, 1, post);
     },
   },
-  actions: {
-    createPost({ commit }, post) {
-      commit("createPost", post);
-    },
-    addPosts({ commit }, posts) {
-      commit("addPosts", posts);
-    },
-    deletePost({ commit }, post) {
-      commit("deletePost", post);
-    },
-    editPost({ commit }, post) {
-      commit("editPost", post);
-    },
-  },
   modules: {},
 });

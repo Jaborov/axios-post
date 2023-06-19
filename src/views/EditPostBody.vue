@@ -117,7 +117,7 @@ export default {
           body: this.body,
         })
         .then(() => {
-          this.body = { ...this.postById(+this.$route.params.id) };
+          this.post = { ...this.postById(+this.$route.params.id) };
           this.$router.back();
         })
         .catch(() => {
