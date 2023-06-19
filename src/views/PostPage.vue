@@ -111,7 +111,6 @@ export default {
     },
   },
   mounted() {
-    // this.post = this.$store.getters.postsById(this.id);
     this.loading = true;
     this.isElementVisible = true;
     instance
