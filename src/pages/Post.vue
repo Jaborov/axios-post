@@ -1,11 +1,7 @@
 <template>
   <div class="d-block" v-if="loading">
     <div class="position-absolute bottom-50 end-50">
-      <div
-        class="spinner-border text-primary"
-        style="width: 4rem; height: 4rem"
-        role="status"
-      >
+      <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>

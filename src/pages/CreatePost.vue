@@ -25,8 +25,7 @@
     >
       <div>
         <div
-          class="bg-info bg-opacity-10 border border-info rounded mx-auto p-2 d-block align-self-center"
-          style="width: 320px"
+          class="bg-info bg-opacity-10 border border-info rounded mx-auto p-2 d-block align-self-center w-75"
         >
           <h1 class="text-center">Create New Post</h1>
         </div>
@@ -43,7 +42,13 @@
               class="form-control"
               aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback"
             />
-            <div class="invalid-feedback">Please choose a username.</div>
+            <div
+              v-for="error in v$.post.userId.$errors"
+              :key="error"
+              class="invalid-feedback"
+            >
+              {{ error.$message }}
+            </div>
           </div>
         </div>
         <div class="col-md-8 mb-3">
@@ -53,25 +58,41 @@
             type="text"
             class="form-control"
             :class="{
-              'is-invalid': isSubmitted && v$.post.title.$invalid,
+              'is-invalid':
+                (isSubmitted && v$.post.title.$invalid) ||
+                v$.post.title.alpha.$invalid,
             }"
             aria-describedby="validationServer03Feedback"
           />
-          <div class="invalid-feedback">Field must not be empty.</div>
+          <div
+            v-for="error in v$.post.title.$errors"
+            :key="error"
+            class="invalid-feedback"
+          >
+            {{ error.$message }}
+          </div>
         </div>
         <div class="mb-3">
           <label for="validationTextarea" class="form-label">Post</label>
           <textarea
             v-model="post.body"
             :class="{
-              'is-invalid': isSubmitted && v$.post.body.$invalid,
+              'is-invalid':
+                (isSubmitted && v$.post.body.$invalid) ||
+                v$.post.body.alpha.$invalid,
             }"
             type="text"
             class="form-control"
+            rows="5"
             placeholder="Required example textarea"
-            style="height: 200px"
           ></textarea>
-          <div class="invalid-feedback">Field must not be empty.</div>
+          <div
+            v-for="error in v$.post.body.$errors"
+            :key="error"
+            class="invalid-feedback"
+          >
+            {{ error.$message }}
+          </div>
         </div>
         <button
           type="submit"
@@ -110,9 +131,23 @@ export default {
   validations() {
     return {
       post: {
-        userId: { required },
-        title: { required, alpha: helpers.regex(/^[а-яёА-ЯЁA-z ]*$/) },
-        body: { required, alpha: helpers.regex(/^[а-яёА-ЯЁA-z ]*$/) },
+        userId: {
+          required: helpers.withMessage("Field must not be empty.", required),
+        },
+        title: {
+          alpha: helpers.withMessage(
+            "There is a number",
+            helpers.regex(/^[а-яёА-ЯЁA-z ]*$/)
+          ),
+          required: helpers.withMessage("Пожалуйста добавьте текст", required),
+        },
+        body: {
+          alpha: helpers.withMessage(
+            "There is a number",
+            helpers.regex(/^[а-яёА-ЯЁA-z ]*$/)
+          ),
+          required: helpers.withMessage("Пожалуйста добавьте текст", required),
+        },
       },
     };
   },

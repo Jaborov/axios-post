@@ -1,11 +1,7 @@
 <template>
   <div class="d-block" v-if="loading">
     <div class="position-absolute bottom-50 end-50">
-      <div
-        class="spinner-border text-primary"
-        style="width: 4rem; height: 4rem"
-        role="status"
-      >
+      <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
@@ -35,37 +31,36 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="post of paginationPost" :key="post.id">
+        <tr
+          class="pointer"
+          @click.stop="openPost(post.id)"
+          v-for="post of paginationPost"
+          :key="post.id"
+        >
           <th>{{ post.id }}</th>
           <td>{{ post.userId }}</td>
-          <td @click="openPost(post.id)">{{ post.title }}</td>
-          <td @click="openPost(post.id)">{{ post.body }}</td>
+          <td>{{ post.title }}</td>
+          <td>{{ post.body }}</td>
           <td>
             <div class="hstack gap-3">
-              <button @click="deletePost(post.id)" class="btn btn-danger">
+              <button
+                :disabled="disabledButton"
+                @click.stop="deletePost(post.id)"
+                class="btn btn-danger"
+              >
                 Delete
               </button>
-              <button @click="editPost(post.id)" class="btn btn-warning">
+              <button
+                :disabled="disabledButton"
+                @click.stop="editPost(post.id)"
+                class="btn btn-warning"
+              >
                 Edit
               </button>
             </div>
           </td>
         </tr>
       </tbody>
-      <!-- <nav aria-label="...">
-        <ul class="pagination pagination-sm">
-          <li
-            v-for="pageNumber in totalPage"
-            :key="pageNumber"
-            class="page-item"
-            :class="{ 'page-item active': page === pageNumber }"
-            aria-current="page"
-            @click="changePage(pageNumber)"
-          >
-            <span class="page-link">{{ pageNumber }}</span>
-          </li>
-        </ul>
-      </nav> -->
     </table>
     <div>
       <nav aria-label="...">
@@ -99,11 +94,11 @@ export default {
       },
       pageNumber: 1,
       limit: 10,
-      totalPage: 0,
       newPost: this.posts || [],
       errorred: false,
       loading: false,
       isElementVisible: true,
+      disabledButton: false,
     };
   },
   computed: {
@@ -123,9 +118,6 @@ export default {
       instance
         .get("/posts")
         .then((response) => {
-          // this.totalPage = Math.ceil(
-          //   response.headers["x-total-count"] / this.limit
-          // );
           this.addPosts(response.data);
           this.newPost = this.posts;
           console.log(this.newPost);
@@ -145,6 +137,7 @@ export default {
       this.pageNumber = pagePost;
     },
     deletePost(id) {
+      this.disabledButton = true;
       this.loading = true;
       instance
         .delete(`/posts/${id}`)
@@ -157,6 +150,7 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+          this.disabledButton = false;
         });
     },
     editPost(id) {
@@ -168,14 +162,10 @@ export default {
       this.$router.push({ name: "post", params: { id } });
     },
   },
-  // watch: {
-  //   page() {},
-  // },
-  // , {
-  //         params: {
-  //           _page: this.page,
-  //           _limit: this.limit,
-  //         },
-  //       }
 };
 </script>
+<style scoped>
+tr.pointer {
+  cursor: pointer;
+}
+</style>

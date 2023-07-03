@@ -4,11 +4,7 @@
   >
     <div class="d-block" v-if="loading">
       <div class="position-absolute bottom-50 end-50">
-        <div
-          class="spinner-border text-primary"
-          style="width: 4rem; height: 4rem"
-          role="status"
-        >
+        <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
@@ -29,19 +25,17 @@
       @submit.prevent="editBody"
       v-if="isElementVisible"
     >
-      <div class="form-floating">
+      <div class="mb-3">
         <textarea
           v-model="post.body"
           type="text"
           class="form-control"
           placeholder="Leave a comment here"
-          id="floatingTextarea2"
-          style="height: 200px"
+          rows="5"
           :class="{
             'is-invalid': isSubmitted && v$.post.body.required.$invalid,
           }"
         ></textarea>
-        <label for="floatingTextarea2">Post</label>
         <div class="invalid-feedback">Please typing a comment.</div>
       </div>
 
