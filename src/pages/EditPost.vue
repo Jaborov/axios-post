@@ -34,7 +34,7 @@
           class="bg-info bg-opacity-10 border border-info rounded mx-auto p-2 d-block align-self-center"
           style="width: 320px"
         >
-          <h1 class="text-center">Create New Post</h1>
+          <h1 class="text-center">Edit Post</h1>
         </div>
         <div class="col-md-4 mb-3">
           <label class="form-label">User name</label>

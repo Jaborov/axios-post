@@ -3,27 +3,27 @@ const routes = [
   {
     path: "/create",
     name: "create",
-    component: () => import("../views/CreatePostPage.vue"),
+    component: () => import("../pages/CreatePost.vue"),
   },
   {
     path: "/list",
     name: "list",
-    component: () => import("../views/ListPage.vue"),
+    component: () => import("../pages/List.vue"),
   },
   {
     path: "/post/:id",
     name: "post",
-    component: () => import("../views/PostPage.vue"),
+    component: () => import("../pages/Post.vue"),
   },
   {
     path: "/editPost/:id",
     name: "editPost",
-    component: () => import("../views/EditPostPage.vue"),
+    component: () => import("../pages/EditPost.vue"),
   },
   {
     path: "/editPostBody/:id",
     name: "editPostBody",
-    component: () => import("../views/EditPostBody.vue"),
+    component: () => import("../pages/EditPostBody.vue"),
   },
 ];
 
