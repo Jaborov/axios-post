@@ -138,7 +138,7 @@ export default {
         title: {
           alpha: helpers.withMessage(
             "gsfafa",
-            helpers.regex(/^[а-яёА-ЯЁA-z ]*$/),
+            helpers.regex(/^[А-яёЁA-z!-+.,@ ]*$/),
             required
           ),
           required: helpers.withMessage("Field must not be empty.", required),
@@ -146,7 +146,7 @@ export default {
         body: {
           alpha: helpers.withMessage(
             "Not to number",
-            helpers.regex(/^[а-яёА-ЯЁA-z ]*$/),
+            helpers.regex(/^[А-яёЁA-z!-+.,@ ]*$/),
             required
           ),
           required: helpers.withMessage("Field must not be empty.", required),

@@ -34,15 +34,19 @@
         <tr
           class="pointer"
           @click.stop="openPost(post.id)"
-          v-for="post of paginationPost"
+          v-for="post of posts"
           :key="post.id"
         >
           <th>{{ post.id }}</th>
           <td>{{ post.userId }}</td>
-          <td>{{ post.title }}</td>
-          <td>{{ post.body }}</td>
+          <td class="wid">
+            <div class="text">{{ post.title }}</div>
+          </td>
+          <td class="wid">
+            <div class="text">{{ post.body }}</div>
+          </td>
           <td>
-            <div class="hstack gap-3">
+            <div class="hstack gap-3 d-flex justify-content-evenly">
               <button
                 :disabled="disabledButton"
                 @click.stop="deletePost(post.id)"
@@ -66,14 +70,14 @@
       <nav aria-label="...">
         <ul class="pagination pagination-sm">
           <li
-            v-for="pagePost in pagesPost"
-            :key="pagePost"
+            v-for="page in totalPages"
+            :key="page"
             class="page-item"
-            :class="{ 'page-item active': pageNumber === pagePost }"
+            :class="{ 'page-item active': pageNumber === page }"
             aria-current="page"
-            @click="changePage(pagePost)"
+            @click="changePage(page)"
           >
-            <span class="page-link">{{ pagePost }}</span>
+            <span class="page-link">{{ page }}</span>
           </li>
         </ul>
       </nav>
@@ -94,6 +98,7 @@ export default {
       },
       pageNumber: 1,
       limit: 10,
+      totalPages: 0,
       newPost: this.posts || [],
       errorred: false,
       loading: false,
@@ -103,24 +108,29 @@ export default {
   },
   computed: {
     ...mapGetters(["posts"]),
-    pagesPost() {
-      return Math.ceil(this.posts.length / 10);
-    },
-    paginationPost() {
-      let from = (this.pageNumber - 1) * this.limit;
-      let to = from + this.limit;
-      return this.posts.slice(from, to);
-    },
   },
   mounted() {
-    if (this.$store.getters.posts.length === 0) {
+    this.fetchPosts();
+  },
+  methods: {
+    ...mapMutations(["deletePostBy", "addPosts"]),
+    async fetchPosts() {
       this.loading = true;
       instance
-        .get("/posts")
+        .get("/posts", {
+          params: {
+            _page: this.pageNumber,
+            _limit: this.limit,
+          },
+        })
         .then((response) => {
+          this.totalPages = Math.ceil(
+            response.headers["x-total-count"] / this.limit
+          );
           this.addPosts(response.data);
           this.newPost = this.posts;
-          console.log(this.newPost);
+
+          console.log(this.posts);
         })
         .catch(() => {
           this.errorred = true;
@@ -129,12 +139,10 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    }
-  },
-  methods: {
-    ...mapMutations(["deletePostBy", "addPosts"]),
-    changePage(pagePost) {
-      this.pageNumber = pagePost;
+      // }
+    },
+    changePage(page) {
+      this.pageNumber = page;
     },
     deletePost(id) {
       this.disabledButton = true;
@@ -162,10 +170,23 @@ export default {
       this.$router.push({ name: "post", params: { id } });
     },
   },
+  watch: {
+    pageNumber() {
+      this.fetchPosts();
+    },
+  },
 };
 </script>
 <style scoped>
 tr.pointer {
   cursor: pointer;
+}
+.wid {
+  max-width: 200px;
+}
+.text {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>

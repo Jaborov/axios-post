@@ -137,14 +137,14 @@ export default {
         title: {
           alpha: helpers.withMessage(
             "There is a number",
-            helpers.regex(/^[а-яёА-ЯЁA-z ]*$/)
+            helpers.regex(/^[А-яёЁA-z!-+.,@ ]*$/)
           ),
           required: helpers.withMessage("Пожалуйста добавьте текст", required),
         },
         body: {
           alpha: helpers.withMessage(
             "There is a number",
-            helpers.regex(/^[а-яёА-ЯЁA-z ]*$/)
+            helpers.regex(/^[А-яёЁA-z!-+.,@ ]*$/)
           ),
           required: helpers.withMessage("Пожалуйста добавьте текст", required),
         },
